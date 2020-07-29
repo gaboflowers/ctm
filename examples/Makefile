@@ -3,7 +3,7 @@
 
 RKTM=$(shell which rktm)
 LIBCTM_VER=0.1
-TARGETS=allones floornthirds runaway
+TARGETS=$(foreach ctmfile,$(wildcard *.ctm),$(basename $(ctmfile)))
 C_TARGETS=$(foreach tgt, $(TARGETS),$(tgt).c)
 .PHONY: clean all c
 
