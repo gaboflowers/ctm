@@ -118,7 +118,6 @@ void TM_print(TM *tm, int n) {
     printf("#%d - state: %d, pos: %d, read: %d, tape size: %d\n", n, tm->current_state, tm->current_pos, TM_read_cell(tm)+'0', (tm->tape)->size);
 }
 
-
 #define BUF_INITSIZE 1024
 #define READ_NBYTES 1024
 void read_file(FILE *stream, char** buf) {
