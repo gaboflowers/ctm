@@ -1,0 +1,97 @@
+setup {
+    alphabet {
+        0, 1;
+    }
+    blank_symbol = 0;
+    max_tape_size = 200;
+    max_number_transitions = 500;
+}
+
+alias {
+	state qw = q3;
+	state qs = q4;
+	state qlso = q5;
+	state qb = q6;
+	state qfail = q7;
+}
+
+declare {
+	init state q0;
+	final q0;
+
+	for(i from 1 to 7) {
+		state qi;
+	}
+}
+
+transition {
+	//-------- Lectura
+	for (n from 0 to 1) {
+		when (state qn) {
+			if (read 1) {
+				goto qn+;
+				write 0;
+				header > 1;
+			}
+		}
+	}
+	when (state q0) {
+		if (read 0) {
+			goto qfail;
+			header > 1;
+		}
+	}
+
+	when (state q2) {
+		if (read 1) {
+			goto qw;
+			write 0;
+			header > 1;
+		}
+	}
+
+	//-------- Escritura
+	when (state qw) {
+		if (read 1) {
+			header > 1;
+		}
+		if (read 0) {
+			goto qs;
+			header > 1;
+		}
+	}
+
+	when (state qs) {
+		if (read 0) {
+			goto qlso;
+			write 1;
+			header < 1;
+		}
+		if (read 1) {
+			header > 1;
+		}
+	}
+
+	when (state qlso) {
+        if (read 0) {
+            goto qb;
+            write 0;
+            header < 1;
+        } else {
+            header < 1;
+        }
+	}
+
+	//--------- Reubicación
+	when (state qb)	{
+		if (read 1) {
+			header < 1;
+		}
+		if (read 0) {
+			goto q0;
+			header > 1;
+		}
+	}
+
+}
+

@@ -1,0 +1,26 @@
+/*
+ * The header just keeps going right.
+ * */
+
+setup {
+    alphabet {
+        1;
+    }
+    blank_symbol = 42;
+    init_tape_size = 15;
+    max_tape_size = 200;
+    max_number_transitions = 250;
+    print_status = 1;
+}
+
+declare {
+    init state q0;
+}
+
+transition {
+    when (state q0) {
+        forall {
+            header > 1;
+        }
+    }
+}

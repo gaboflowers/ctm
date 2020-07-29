@@ -1,0 +1,32 @@
+/* MT que acepta sólo 1*
+   Deja el input intacto */
+
+setup {
+    alphabet {
+       1, 2;
+    }
+    blank_symbol = 0;
+    max_tape_size = 20;
+    max_number_transitions = 200;
+}
+
+alias {
+}
+
+declare {
+    init state qGood;
+    state qBad;
+    final qGood;
+}
+
+transition {
+    // lectura
+    when (state qGood) {
+        if (read 1) {
+            header > 1;
+        }
+        if (read 2) {
+            goto qBad;
+        }
+    }
+}
