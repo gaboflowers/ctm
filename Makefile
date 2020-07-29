@@ -21,4 +21,4 @@ install: lib
 	mkdir -p $(DESTDIR)/lib $(DESTDIR)/include
 	cp ./include/*.h $(DESTDIR)/include
 	cp ./lib/$(LIBCTM_NAME) $(DESTDIR)/lib/$(LIBCTM_NAME)
-	ln -s $(DESTDIR)/lib/$(LIBCTM_NAME) $(DESTDIR)/lib/libctm.so
+	ln -s -f $(DESTDIR)/lib/$(LIBCTM_NAME) $(DESTDIR)/lib/libctm.so
