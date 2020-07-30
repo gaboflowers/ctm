@@ -1,7 +1,6 @@
 /**
  *
  *  Acepta un string de paréntesis balanceados
- * (ignorando el primer caracter)
  **/
 
 setup {
@@ -9,7 +8,7 @@ setup {
         '(', ')', '+', '$', 's', 'n';
     }
     blank_symbol = ' ';
-    init_pos = 1;
+    init_pos = 1; // <- esto es importante
     init_tape_size = 100;
     max_tape_size = 150;
     max_number_transitions = 500;

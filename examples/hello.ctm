@@ -1,0 +1,81 @@
+setup {
+    alphabet {
+        'h', 'e', 'l', 'o', ' ';
+    }
+    blank_symbol = -1;
+    init_pos = 6;
+    // print_status = 1; // <- Print Driven Debugging
+    halt_on_unhandled_blank = 0; // hay que hacer esto si se cambia los "forall" por "if (read blank)",
+                                 // y aparte habría que duplicar código dentro del "when (state qInit)"
+                                 // poniendo un "if (read blank) { [algo] } else { [lo mismo] }"
+}
+
+declare {
+    init state q0;
+    for (j from 0 to 7) {
+        state qj;
+    }
+    final q7;
+}
+
+alias {
+    state qInit = q0;
+    state qGreet = q7;
+}
+
+transition {
+    when (state qInit) {
+        forall {
+            goto q1;
+            header < 6;
+        }
+    }
+
+    when (state q1) {
+        forall {
+            write 'h';
+            header > 1;
+            goto q2;
+        }
+    }
+
+    when (state q2) {
+        forall {
+            write 'e';
+            header > 1;
+            goto q3;
+        }
+    }
+
+    when (state q3) {
+        forall {
+            write 'l';
+            header > 1;
+            goto q4;
+        }
+    }
+
+    when (state q4) {
+        forall {
+            write 'l';
+            header > 1;
+            goto q5;
+        }
+    }
+
+    when (state q5) {
+        forall {
+            write 'o';
+            header > 1;
+            goto q6;
+        }
+    }
+
+    when (state q6) {
+        forall {
+            write ' ';
+            header < 5;
+            goto qGreet;
+        }
+    }
+}

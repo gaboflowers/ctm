@@ -253,7 +253,7 @@ int TM_run(TM *tm) {
             break;
             // </program>
             default:
-                return REJECT;
+                return TM_state_is_accept(tm);
         }
         transitions_count++;
     }

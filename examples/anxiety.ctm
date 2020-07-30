@@ -1,0 +1,51 @@
+setup {
+    alphabet {
+        'A', ' ';
+    }
+    blank_symbol = -1;
+    init_pos = 6;
+    // print_status = 1; // <- Print Driven Debugging
+    halt_on_unhandled_blank = 0; // hay que hacer esto si se cambia los "forall" por "if (read blank)",
+                                 // y aparte habría que duplicar código dentro del "when (state qInit)"
+                                 // poniendo un "if (read blank) { [algo] } else { [lo mismo] }"
+}
+
+declare {
+    init state q0;
+    for (j from 0 to 7) {
+        state qj;
+    }
+    final qt;
+}
+
+alias {
+    state qInit = q0;
+    state qGreet = q7;
+}
+
+transition {
+    when (state qInit) {
+        forall {
+            goto q1;
+            header < 6;
+        }
+    }
+
+    for (i from 1 to 5) {
+        when (state qi) {
+            forall {
+                write 'A';
+                header > 1;
+                goto qi+; // sí, así es la sintaxis para el incremento de un índice
+            }
+        }
+    }
+
+    when (state q6) {
+        forall {
+            write 'A';
+            header < 5;
+            goto qGreet;
+        }
+    }
+}
