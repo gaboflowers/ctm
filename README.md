@@ -98,11 +98,12 @@ Now it not only is replacing the index value in the `when (state qi)` part, but 
 
 Of course, there are some limitations: the indexation is only allowed on state identifiers, not on values. After all, where is the fun in programming a Turing machine, if you can use for loops everywhere? Besides that, the increment or decrement is only unitary (+1 or -1, nothing else). Nevertheless, it can still be useful for wapping up monotonous pieces of code.
 
-### Input and Output
+### 3. Input and Output
 
 By passing the `--stdin` flag, the machine will read is input from the standard input instead of the arguments.
 As for output, when a machine halts, it will output the contents of its tape to the standard output, reading from the last position of its header, until it reaches the first blank symbol (check [justprint](https://github.com/gaboflowers/ctm/blob/master/examples/justprint.ctm), [isbalanced](https://github.com/gaboflowers/ctm/blob/master/examples/isbalanced.ctm) or *anxiety* for that).
 
+## Further notice
 ### Caveats
 
 This is work in progress. If you see the [transpiler](https://github.com/gaboflowers/rktm/blob/master/transpiler.rkt), I even still have a couple "TODO"s around the code. At the present day, the `alphabet` block still serves no purpose (it had one when I was writing the parser, then it disappeared, or I forgot about it). But I intend to make it a compile-time check to help the programmer.
