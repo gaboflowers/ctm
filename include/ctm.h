@@ -11,6 +11,8 @@
 #define RUNTAPE_ERROR 4 // Yes, it's a TM Runtime pun
 
 #define show_macro(macro_name) printf(#macro_name ":  %d\n", macro_name);
+#define show_int_arr(arr_name, n) {printf(#arr_name " (%d):  ", n);print_int_array(arr_name, n);}
+
 //#define min(a, b) (a) < (b) ? a : b
 #define min(a, b) \
     ({ __typeof__ (a) _a = (a); \
@@ -21,20 +23,17 @@
 
 // For the first 4 bits of the Cell type (defines data type)
 // TODO: Implement mixed cell type rules.
-#define CELL_TYPE_INT 16
+#define CELL_TYPE_INT 8
 #define CELL_TYPE_CHAR 0
 
-// For the next 4 bits of the Cell type (defines final reading flow)
-// TODO: Implement changes of flow on the TM.
-#define CELL_FLOW_CONT 1
-#define CELL_FLOW_STOP 0
-
-typedef uint32_t cell_value_t; // ints are already 32 bits in my computer
-typedef uint32_t cell_type_t;  // but portability
+typedef uint32_t cell_value_t; // ints are already 32 bits in my computer, but portability.
+typedef uint32_t cell_type_t;  // 4 bytes for type might seem like a waste of memory,
+                               // but anyway memory alignment is to the next power of 2,
+                               // so might as well use all the space.
 
 typedef struct cell {
     cell_value_t value;
-    cell_type_t type; // 1st 4 bits: type, 2nd 4 bits: cont or stop
+    cell_type_t type; // 1st 4 bits: type
 } Cell;
 
 void cell_init(Cell *pcell, cell_value_t blank_symbol, cell_type_t default_cell_type);
@@ -73,6 +72,9 @@ int TM_state_is_accept(TM *tm);
 void TM_print(TM *tm, int n);
 
 // -------- Misc
+void print_char_array(char *buf, int n);
+void print_int_array(int *buf, int n);
+
 #define BUF_INITSIZE 1024
 #define READ_NBYTES 1024
 void read_file(FILE *stream, char** buf);

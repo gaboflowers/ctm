@@ -5,6 +5,11 @@
 #define CTM_INIT_TAPE_SIZE 200
 #endif
 
+#ifndef CTM_MAX_TAPE_SIZE
+#warning CTM_MAX_TAPE_SIZE is undefined. Will use default value 200
+#define CTM_MAX_TAPE_SIZE 500
+#endif
+
 #ifndef CTM_NUMBER_OF_STATES
 #warning CTM_NUMBER_OF_STATES is undefined. This binary will certainly fail (or at least, it is pretty likely).
 #define CTM_NUMBER_OF_STATES 3
@@ -13,6 +18,11 @@
 #ifndef CTM_NUMBER_OF_FINAL_STATES
 #warning CTM_NUMBER_OF_FINAL_STATES is undefined. This binary will most likely fail.
 #define CTM_NUMBER_OF_FINAL_STATES 3
+#endif
+
+#ifndef CTM_MAX_NUMBER_TRANSITIONS
+#warning CTM_MAX_NUMBER_TRANSITIONS is undefined. Will use default value 500
+#define CTM_MAX_NUMBER_TRANSITIONS 500
 #endif
 
 #ifndef CTM_ALPHABET_SIZE
@@ -31,18 +41,8 @@ int ctm_alphabet[CTM_ALPHABET_SIZE] = {0, 1};
 #endif
 
 #ifndef CTM_DEFAULT_CELL_TYPE
-#warning CTM_DEFAULT_CELL_TYPE is undefined. Will use CELL_TYPE_CHAR | CELL_FLOW_STOP
-#define CTM_DEFAULT_CELL_TYPE CELL_TYPE_CHAR | CELL_FLOW_STOP
-#endif
-
-#ifndef CTM_MAX_TAPE_SIZE
-#warning CTM_MAX_TAPE_SIZE is undefined. Will use default value 200
-#define CTM_MAX_TAPE_SIZE 500
-#endif
-
-#ifndef CTM_MAX_NUMBER_TRANSITIONS
-#warning CTM_MAX_NUMBER_TRANSITIONS is undefined. Will use default value 500
-#define CTM_MAX_NUMBER_TRANSITIONS 500
+#warning CTM_DEFAULT_CELL_TYPE is undefined. Will use CELL_TYPE_CHAR
+#define CTM_DEFAULT_CELL_TYPE CELL_TYPE_CHAR
 #endif
 
 #ifndef CTM_INIT_STATE
@@ -61,6 +61,10 @@ int ctm_final_states[CTM_NUMBER_OF_FINAL_STATES] = {-5, -6};
 
 #ifndef CTM_ALLOW_PARTIAL_ACCEPT
 #define CTM_ALLOW_PARTIAL_ACCEPT 0
+#endif
+
+#ifndef CTM_HALT_ON_UNHANDLED_BLANK
+#define CTM_HALT_ON_UNHANDLED_BLANK 1
 #endif
 
 #ifndef CTM_HELP

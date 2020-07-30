@@ -10,6 +10,7 @@ setup {
     init_tape_size = 15;
     max_tape_size = 200;
     max_number_transitions = 250;
+    halt_on_unhandled_blank = 0; // <- If not, the machine will stop on the first blank cell
     print_status = 1;
 }
 

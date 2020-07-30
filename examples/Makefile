@@ -18,8 +18,7 @@ $(TARGETS) : % : %.c
 	$(RKTM) $^
 
 clean:
-	rm $(C_TARGETS)
-	rm $(TARGETS)
+	rm $(TARGETS) $(C_TARGETS)
 
 # If libctm is compiled but not installed, remember to run
 # `$ export LD_LIBRARY_PATH=../lib` or to wherever the library

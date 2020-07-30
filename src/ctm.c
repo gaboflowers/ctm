@@ -118,6 +118,28 @@ void TM_print(TM *tm, int n) {
     printf("#%d - state: %d, pos: %d, read: %d, tape size: %d\n", n, tm->current_state, tm->current_pos, TM_read_cell(tm)+'0', (tm->tape)->size);
 }
 
+void print_char_array(char *buf, int n) {
+    printf("{");
+    if (n > 0) {
+        printf("%d", buf[0]);
+        for (int i=1; i<n; i++) {
+            printf(", %d", buf[i]);
+        }
+    }
+    puts("}");
+}
+
+void print_int_array(int *buf, int n) {
+    printf("{");
+    if (n > 0) {
+        printf("%d", buf[0]);
+        for (int i=1; i<n; i++) {
+            printf(", %d", buf[i]);
+        }
+    }
+    puts("}");
+}
+
 #define BUF_INITSIZE 1024
 #define READ_NBYTES 1024
 void read_file(FILE *stream, char** buf) {

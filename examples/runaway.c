@@ -16,6 +16,7 @@ int ctm_alphabet[CTM_ALPHABET_SIZE] = {1};
 #define CTM_INIT_TAPE_SIZE 15
 #define CTM_MAX_TAPE_SIZE 200
 #define CTM_MAX_NUMBER_TRANSITIONS 250
+#define CTM_HALT_ON_UNHANDLED_BLANK 0
 #define CTM_PRINT_STATUS 1
 #define CTM_NUMBER_OF_STATES 1
 #define CTM_NUMBER_OF_FINAL_STATES 0
@@ -33,6 +34,7 @@ int ctm_final_states[CTM_NUMBER_OF_FINAL_STATES] = {};
 #include "ctm_macros.h"
 
 void show_info() {
+    show_int_arr(ctm_alphabet, CTM_ALPHABET_SIZE);
     show_macro(CTM_INIT_TAPE_SIZE);
     show_macro(CTM_MAX_TAPE_SIZE);
     show_macro(CTM_MAX_NUMBER_TRANSITIONS);
@@ -65,11 +67,13 @@ int TM_run(TM *tm) {
         switch(tm->current_state) {
             // <program>
             case 1:
+                HANDLE_HEADER(tm, TM_move_header_right(tm, 1));
                 switch (TM_read_cell(tm)) {
-                    default:
-                        HANDLE_HEADER(tm, TM_move_header_right(tm, 1));
-                        break;
 
+#if CTM_HALT_ON_UNHANDLED_BLANK
+                    case CTM_BLANK_SYMBOL:
+                        return TM_state_is_accept(tm);
+#endif // CTM_HALT_ON_UNHANDLED_BLANK
                 }
             break;
             // </program>
@@ -149,7 +153,7 @@ int main(int argc, char *argv[]) {
                 verbose = 1;
                 break;
             default:
-                fprintf(stderr, "Usage: %s [ -h | -[t|T] [tape] | --[stdin] | -i ]\n", argv[0]);
+                fprintf(stderr, "Usage: %s [ -h | -i | -n | -t [tape] | --[stdin] | -v ]\n", argv[0]);
                 return -1;
             case -1:
                 goto finish_options;
