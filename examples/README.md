@@ -1,38 +1,39 @@
-# Ejemplos de CTM
+# CTM Examples
 
-## Transpilación y compilación
+## Transpilation and compilation
 ```
 make
 ```
 
-## Detalle
+## Detail
 
-1. `allones.ctm` (Alfabeto: 1,2; Blanco: 0)
-  Acepta secuencias arbitrarias de 1s
+1. `allones.ctm` (Alphabet: 1,2; Blank: 0)
+  Accepts on 1s sequences of arbitrary length
 ```
-$ ./allones -vnt 11111 # acepta
-$ ./allones -vnt 1111112 # rechaza
-$ ./allones -vnt 111110 # acepta (0 es el fin de lectura)
-$ ./allones -vnt 1111102 # acepta (0 es el fin de lectura)
-$ echo -n '1111' | ./allones -vn --stdin # acepta
-$ echo -n '1111' | ./allones -v --stdin # rechaza
-$ echo -n '\x01\x01\x01' | ./allones -v --stdin # acepta
-$ echo -n '\x31\x31\x31' | ./allones -vn --stdin # acepta
-$ echo -n '\x31\x31\x31' | ./allones -v --stdin # rechaza
+$ ./allones -vnt 11111 # accepts
+$ ./allones -vnt 1111112 # rejects
+$ ./allones -vnt 111110 # accepts (0 means halt)
+$ ./allones -vnt 1111102 # accepts (0 means halt)
+$ echo -n '1111' | ./allones -vn --stdin # accepts
+$ echo -n '1111' | ./allones -v --stdin # rejects
+$ echo -n '\x01\x01\x01' | ./allones -v --stdin # accepts
+$ echo -n '\x31\x31\x31' | ./allones -vn --stdin # accepts
+$ echo -n '\x31\x31\x31' | ./allones -v --stdin # rejects
 ```
 
-2. `allcharones.ctm` (Alfabeto: '1','2'; Blanco: '0')
-  Acepta secuencias arbitrarias de '1's.
+2. `allcharones.ctm` (Alphabet: '1','2'; Blank: '0')
+  Accepts on '1's sequences of arbitrary length
+
 ```
-$ ./allcharones -vt 11111 # acepta
-$ ./allcharones -vt 1111112 # rechaza
-$ ./allcharones -vt 111110 # acepta ('0' es el fin de lectura)
-$ ./allcharones -vt 1111102 # acepta ('0' es el fin de lectura)
-$ echo -n '1111' | ./allcharones -vn --stdin # rechaza
-$ echo -n '1111' | ./allcharones -v --stdin # acepta
-$ echo -n '\x01\x01\x01' | ./allcharones -v --stdin # rechaza
-$ echo -n '\x31\x31\x31' | ./allcharones -v --stdin # acepta
-$ echo -n '\x31\x31\x31' | ./allcharones -vn --stdin # rechaza
-$ echo -n '\x31\x31\x31' | ./allcharones -v --stdin # acepta
+$ ./allcharones -vt 11111 # accepts
+$ ./allcharones -vt 1111112 # rejects
+$ ./allcharones -vt 111110 # accepts ('0' means halt)
+$ ./allcharones -vt 1111102 # accepts ('0' means halt)
+$ echo -n '1111' | ./allcharones -vn --stdin # rejects
+$ echo -n '1111' | ./allcharones -v --stdin # accepts
+$ echo -n '\x01\x01\x01' | ./allcharones -v --stdin # rejects
+$ echo -n '\x31\x31\x31' | ./allcharones -v --stdin # accepts
+$ echo -n '\x31\x31\x31' | ./allcharones -vn --stdin # rejects
+$ echo -n '\x31\x31\x31' | ./allcharones -v --stdin # accepts
 ```
 
