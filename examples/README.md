@@ -37,3 +37,13 @@ $ echo -n '\x31\x31\x31' | ./allcharones -vn --stdin # rejects
 $ echo -n '\x31\x31\x31' | ./allcharones -v --stdin # accepts
 ```
 
+3. `isbalanced.ctm` (Alphabet: '(', ')', '+', '$', 's', 'n'; Blank: ' ')
+  Accepts a balanced string of parentheses.
+  Prints "s" on accept, and "n" (and a sequence of as many '+' as excess of open parentheses there are, due to how output is handled on the Tape) on reject.
+
+```
+$ ./isbalanced -t '((()(())))' # accepts and prints "s"
+$ ./isbalanced -t '(((((())' # rejects and prints "n+++"
+$ ./isbalanced -t '()()()()()' # accepts and prints "s"
+$ ./isbalanced -t '())))' # rejects and prints "n"
+```
