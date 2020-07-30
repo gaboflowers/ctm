@@ -1,0 +1,202 @@
+/**
+ *
+ *  Acepta un string de paréntesis balanceados
+ * (ignorando el primer caracter)
+ **/
+
+setup {
+    alphabet {
+        '(', ')', '+', '$', 's', 'n';
+    }
+    blank_symbol = ' ';
+    init_pos = 1;
+    init_tape_size = 100;
+    max_tape_size = 150;
+    max_number_transitions = 500;
+    print_status = 1;
+    halt_on_unhandled_blank = 0;
+}
+
+declare {
+    init state qRead; // 1
+    state qCheckTally; // 2
+
+    state qTallyOpen; // 3
+    state qMarkTallyOpen; // 4
+
+    state qTallyClose; // 5
+    state qMarkTallyClose; // 6
+    state qGoTallyTailClose; // 7
+    state qDeleteLastMark; // 8
+
+    state qBackToHeadTally; // 9
+    state qBackToHeadInput; // 10
+
+    final state qAccept; // 11
+    state qReject; // 12
+}
+
+transition {
+
+    /* Esto era necesario antes de `init_pos = 1;`
+     *
+    // Ignorar el primer caracter (o nos caemos de la cinta de regreso)
+    when (state qInit) {
+        forall {
+            write ' ';
+            header > 1;
+            goto qRead;
+        }
+    }
+    */
+
+    when (state qRead) {
+        if (read '(') {
+            write '$';
+            header > 1;
+            goto qTallyOpen;
+        }
+        if (read ')') {
+            write '$';
+            header > 1;
+            goto qTallyClose;
+        }
+        if (read ' ') {
+            header > 1;
+            goto qCheckTally;
+        }
+    }
+
+    /*
+     *  ((()(())))_[tally]
+     *            ^jump blank
+     * */
+
+    // abre paréntesis
+    when (state qTallyOpen) {
+        if (read ' ') {
+            goto qMarkTallyOpen;
+            header > 1;
+        } else { // '(' or ')'
+            header > 1;
+        }
+    }
+
+    when (state qMarkTallyOpen) {
+        if (read '+') {
+            header > 1;
+        }
+        if (read ' ') { // tail of the tally
+            write '+';
+            goto qBackToHeadTally;
+            header < 1;
+        }
+    }
+
+    // cierre paréntesis
+    when (state qTallyClose) {
+        if (read ' ') {
+            goto qMarkTallyClose;
+            header > 1;
+        } else {
+            header > 1;
+        }
+    }
+
+    when (state qMarkTallyClose) {
+        if (read '+') {
+            goto qGoTallyTailClose;
+            header > 1;
+        }
+        if (read ' '){ // tengo que cerrar un paréntesis no abierto
+            /* Si se usa "else" en vez de "if (read ' ')", hay que
+               pasarle el parámetro halt_on_unhandled_blank = 0
+               en el setup, o no va a meterse en este caso por ser
+               (y no va a ir a qReject) por no manejar el símbolo
+               vacío de forma explícita. */
+            goto qReject;
+        }
+    }
+
+    when (state qGoTallyTailClose) {
+        if (read ' ') { // llegué al final
+            header < 1;
+            goto qDeleteLastMark;
+        } else {
+            header > 1;
+        }
+    }
+
+    when (state qDeleteLastMark) {
+        if (read '+') {
+            write ' ';
+            header < 1;
+            goto qBackToHeadTally;
+        }
+        /***
+        else {
+            error "This shouldn't happen"; // me gustaría implementar esto
+        }
+        +**/
+    }
+
+    // devolverse a leer
+    when (state qBackToHeadTally) {
+        if (read '+') {
+            header < 1;
+        }
+        if (read ' ') {
+            header < 1;
+            goto qBackToHeadInput;
+        }
+    }
+
+    /*
+     *  $$()(())))_++[tally]
+     *       <-back_to_head_input
+     *
+     *  $$$$$$$$$$_++[tally]
+     *       <-back_to_head_input
+     *
+     *
+     *  (_______
+     *  $_+_____
+     *
+     * */
+
+
+    when (state qBackToHeadInput) {
+        if (read '$') { // llegué a lo ya procesado
+            goto qRead;
+            header > 1;
+        }
+        if (read '(')) {
+            header < 1;
+        }
+        if (read ')')) {
+            header < 1;
+        }
+    }
+
+    when (state qCheckTally) {
+        if (read ' ') {
+            goto qAccept;
+        } else {
+            write ' ';
+            goto qReject;
+        }
+    }
+
+    when (state qAccept) {
+        if (read ' ') {
+            write 's'; // sí
+        }
+    }
+
+    when (state qReject) {
+        if (read ' ') {
+            write 'n'; // no
+        }
+    }
+
+}

@@ -1,6 +1,10 @@
 #ifndef CTM_MACROS_H
 #define CTM_MACROS_H
 
+#ifndef CTM_INIT_POS
+#define CTM_INIT_POS 0
+#endif
+
 #ifndef CTM_INIT_TAPE_SIZE
 #define CTM_INIT_TAPE_SIZE 200
 #endif

@@ -23,8 +23,8 @@
 
 // For the first 4 bits of the Cell type (defines data type)
 // TODO: Implement mixed cell type rules.
-#define CELL_TYPE_INT 8
-#define CELL_TYPE_CHAR 0
+#define CELL_TYPE_INT 2
+#define CELL_TYPE_CHAR 1
 
 typedef uint32_t cell_value_t; // ints are already 32 bits in my computer, but portability.
 typedef uint32_t cell_type_t;  // 4 bytes for type might seem like a waste of memory,
@@ -69,7 +69,8 @@ int TM_move_header_right(TM *tm, int step);
 cell_value_t TM_read_cell(TM *tm);
 void TM_write_cell(TM *tm, cell_value_t value);
 int TM_state_is_accept(TM *tm);
-void TM_print(TM *tm, int n);
+void TM_show_status(TM *tm, int n);
+void TM_print_output(TM *tm);
 
 // -------- Misc
 void print_char_array(char *buf, int n);

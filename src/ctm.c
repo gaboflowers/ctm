@@ -56,7 +56,6 @@ int tape_extend(Tape *tape) {
 TM *TM_create(int init_tape_size, int max_tape_size, cell_value_t blank_symbol, cell_type_t default_cell_type) {
     TM *tm = malloc(sizeof(TM));
     tm->tape = tape_create(init_tape_size, max_tape_size, blank_symbol, default_cell_type);
-    tm->current_pos = 0;
     return tm;
 }
 
@@ -68,11 +67,12 @@ void TM_free(TM *tm) {
 int TM_initialise_tape_input(TM *tm, char *input, int args_as_integers) {
     int input_length = 0;
     while (*input) {
-        if (input_length >= (tm->tape)->size) {
-            fprintf(stderr, "[TM_initialise_tape_input] Tape input length is greater than the current tape size (%d).\n", (tm->tape)->size);
+        if ((tm->current_pos + input_length) >= (tm->tape)->size) {
+            fprintf(stderr, "[TM_initialise_tape_input] Tape input length is greater "
+                    "than the current tape size (%d, offset %d).\n", (tm->tape)->size, tm->current_pos);
             return -1;
         }
-        (tm->tape)->cell_array[input_length].value = *input - (args_as_integers ? '0' : 0);
+        (tm->tape)->cell_array[tm->current_pos+input_length].value = *input - (args_as_integers ? '0' : 0);
         input++;
         input_length++;
     }
@@ -114,10 +114,37 @@ int TM_state_is_accept(TM *tm) {
     return REJECT;
 }
 
-void TM_print(TM *tm, int n) {
-    printf("#%d - state: %d, pos: %d, read: %d, tape size: %d\n", n, tm->current_state, tm->current_pos, TM_read_cell(tm)+'0', (tm->tape)->size);
+void TM_show_status(TM *tm, int n) {
+    cell_value_t read_value = TM_read_cell(tm);
+    printf("#%d - state: %d, pos: %d, read: %d ('%c'), tape size: %d\n", n, tm->current_state, tm->current_pos,
+                                                                         read_value, read_value, (tm->tape)->size);
 }
 
+void TM_print_output(TM *tm) {
+    cell_value_t read_value, blank_symbol;
+    blank_symbol = (tm->tape)->blank_symbol;
+    cell_type_t read_type;
+    for (int i=tm->current_pos; i < (tm->tape)->size; i++) {
+        read_value = (tm->tape)->cell_array[i].value;
+        read_type = (tm->tape)->cell_array[i].type;
+        if (read_value == blank_symbol) {
+            return;
+        }
+        switch (read_type) {
+            case CELL_TYPE_INT:
+                printf("%d", read_value);
+                break;
+            case CELL_TYPE_CHAR:
+                putchar(read_value);
+                break;
+            default:
+                fprintf(stderr, "[TM_print_output] Unknown cell type: %d\n", read_type);
+                break;
+        }
+    }
+}
+
+// Misc
 void print_char_array(char *buf, int n) {
     printf("{");
     if (n > 0) {

@@ -1,0 +1,27 @@
+/*
+ * Fails right away. Should print whatever is on the tape.
+ * */
+
+setup {
+    alphabet {
+        1;
+    }
+    blank_symbol = 0;
+    init_tape_size = 50;
+    max_tape_size = 200;
+    max_number_transitions = 250;
+    default_cell_type = char;
+}
+
+declare {
+    init state q0;
+    state q1;
+}
+
+transition {
+    when (state q0) {
+        forall {
+            goto q1;
+        }
+    }
+}
