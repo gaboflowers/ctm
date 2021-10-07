@@ -115,15 +115,24 @@ This is work in progress. If you see the [transpiler](https://github.com/gaboflo
 
 ## Installation
 
+Linux steps only
+
+0. Clone this repository
+```shell
+git clone https://github.com/gaboflowers/ctm
+```
+
 1. Install the *libctm*
 ```shell
+cd ctm
 make
 sudo make install
 make clean
 ```
 
-2. Install the [RKTM transpiler](https://github.com/gaboflowers/rktm)
+2. Clone and install the [RKTM transpiler](https://github.com/gaboflowers/rktm)
 ```shell
+git clone https://github.com/gaboflowers/rktm
 cd rktm
 sudo ./install.sh
 ```
